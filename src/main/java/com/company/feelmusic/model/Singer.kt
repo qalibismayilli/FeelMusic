@@ -1,15 +1,19 @@
 package com.company.feelmusic.model
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToMany
+import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "categories")
-data class Category(
-
+@Table(name = "singers")
+data class Singer(
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "UUID")
@@ -22,11 +26,14 @@ data class Category(
 
     @Column(name = "updated_date")
     @UpdateTimestamp
-    val updatedDate: LocalDateTime?,
+    val updatedDate: LocalDateTime,
 
-    @Column(name = "name")
-    val name: String?,
+    val username: String?,
 
-    @OneToMany(mappedBy = "category", cascade = [CascadeType.ALL])
+    val password: String?,
+
+    val email: String? ,
+
+    @ManyToMany(mappedBy = "singers")
     val songs: List<Song>?
 )

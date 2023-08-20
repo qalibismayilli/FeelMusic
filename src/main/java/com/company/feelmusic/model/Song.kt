@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 data class Song(
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     val id: String?,
@@ -27,7 +28,9 @@ data class Song(
     val name: String?,
 
     @Column(name = "singer")
-    val singer: String?,
+    @ManyToMany
+    @JoinTable(name = "songs_singers")
+    val singers: List<Singer>?,
 
     @Enumerated(EnumType.STRING)
     val feel: Feel?,
@@ -42,5 +45,29 @@ data class Song(
     @Column(name = "lyrics")
     val lyrics: String?,
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    val image: Image?
 
-    )
+) {
+    data class Builder(
+        var id: String? = null,
+        var createdDate: LocalDateTime? = null,
+        var updatedDate: LocalDateTime? = null,
+        var name: String? = null,
+        var singers: List<Singer>? = null,
+        var feel: Feel? = null,
+        var category: Category? = null,
+        var voiceUrl: String? = null,
+        var lyrics: String? = null,
+        var image: Image? = null
+    ) {
+        fun name(name: String) = apply { this.name = name }
+        fun singers(singers: List<Singer>) = apply { this.singers }
+        fun feel(feel: Feel) = apply { this.feel = feel }
+        fun category(category: Category) = apply { this.category = category }
+        fun lyrics(lyrics: String) = apply { this.lyrics = lyrics }
+        fun image(image: Image) = apply { this.image = image }
+
+        fun build() = Song(id, createdDate, updatedDate, name, singers, feel, category, voiceUrl, lyrics, image)
+    }
+}
