@@ -28,12 +28,8 @@ data class Song(
     val name: String?,
 
     @Column(name = "singer")
-    @ManyToMany
-    @JoinTable(name = "songs_singers")
-    val singers: List<Singer>?,
+    val singer: String?,
 
-    @Enumerated(EnumType.STRING)
-    val feel: Feel?,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "category")
@@ -46,7 +42,10 @@ data class Song(
     val lyrics: String?,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    val image: Image?
+    val image: Image?,
+
+    @ManyToMany
+    val feelContainers: List<FeelContainer>?
 
 ) {
     data class Builder(
@@ -54,20 +53,20 @@ data class Song(
         var createdDate: LocalDateTime? = null,
         var updatedDate: LocalDateTime? = null,
         var name: String? = null,
-        var singers: List<Singer>? = null,
-        var feel: Feel? = null,
+        var singer: String? = null,
         var category: Category? = null,
         var voiceUrl: String? = null,
         var lyrics: String? = null,
-        var image: Image? = null
+        var image: Image? = null,
+        var feelContainers: List<FeelContainer>? = null
     ) {
         fun name(name: String) = apply { this.name = name }
-        fun singers(singers: List<Singer>) = apply { this.singers }
-        fun feel(feel: Feel) = apply { this.feel = feel }
+        fun singer(singer: String) = apply { this.singer }
         fun category(category: Category) = apply { this.category = category }
         fun lyrics(lyrics: String) = apply { this.lyrics = lyrics }
         fun image(image: Image) = apply { this.image = image }
+        fun feelContainers(feelContainers: List<FeelContainer>?) = apply { this.feelContainers = feelContainers }
 
-        fun build() = Song(id, createdDate, updatedDate, name, singers, feel, category, voiceUrl, lyrics, image)
+        fun build() = Song(id, createdDate, updatedDate, name, singer, category, voiceUrl, lyrics, image, feelContainers)
     }
 }

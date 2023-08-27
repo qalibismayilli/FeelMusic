@@ -4,6 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.GenericGenerator
@@ -37,6 +38,29 @@ data class User(
     val email: String?,
 
     @Column(name = "role")
-    val role: Role?
+    val role: Role?,
+
+    @OneToMany(mappedBy = "user")
+    val feelContainers: List<FeelContainer>?
 ) {
+
+    data class Builder(
+        var id: String? = null,
+        var createdDate: LocalDateTime? = null,
+        var updatedDate: LocalDateTime? = null,
+        var username: String? = null,
+        var password: String? = null,
+        var email: String? = null,
+        var role: Role? = null,
+        var feelContainers: List<FeelContainer>? = null
+    ) {
+        fun username(username: String) = apply { this.username = username }
+        fun password(password: String) = apply { this.password = password }
+        fun email(email: String) = apply { this.email = email }
+        fun role(role: Role) = apply { this.role = role }
+        fun feelContainers(feelContainers: List<FeelContainer>?) = apply { this.feelContainers = feelContainers }
+
+        fun build() = User(id, createdDate, updatedDate, username, password, email, role, feelContainers)
+
+    }
 }
