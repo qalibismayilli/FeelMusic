@@ -1,5 +1,6 @@
 package com.company.feelmusic.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.GenericGenerator
@@ -45,6 +46,7 @@ data class Song(
     val image: Image?,
 
     @ManyToMany
+    @JsonIgnore
     val feelContainers: List<FeelContainer>?
 
 ) {
@@ -63,10 +65,12 @@ data class Song(
         fun name(name: String) = apply { this.name = name }
         fun singer(singer: String) = apply { this.singer }
         fun category(category: Category) = apply { this.category = category }
+        fun voiceUrl(voiceUrl: String) = apply { this.voiceUrl = voiceUrl }
         fun lyrics(lyrics: String) = apply { this.lyrics = lyrics }
         fun image(image: Image) = apply { this.image = image }
         fun feelContainers(feelContainers: List<FeelContainer>?) = apply { this.feelContainers = feelContainers }
 
-        fun build() = Song(id, createdDate, updatedDate, name, singer, category, voiceUrl, lyrics, image, feelContainers)
+        fun build() =
+            Song(id, createdDate, updatedDate, name, singer, category, voiceUrl, lyrics, image, feelContainers)
     }
 }

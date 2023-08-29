@@ -29,4 +29,19 @@ data class Category(
 
     @OneToMany(mappedBy = "category", cascade = [CascadeType.ALL])
     val songs: List<Song>?
-)
+) {
+    data class Builder(
+        var id: String? = null,
+        var createdDate: LocalDateTime? = null,
+        var updatedDate: LocalDateTime? = null,
+        var name: String? = null,
+        var songs: List<Song>? = null,
+    ) {
+        fun name(name: String?) = apply { this.name = name }
+        fun songs(songs: List<Song>) = apply { this.songs = songs }
+
+        fun build() = Category(id, createdDate, updatedDate, name, songs)
+    }
+
+
+}
