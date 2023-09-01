@@ -63,7 +63,7 @@ data class Song(
         var feelContainers: List<FeelContainer>? = null
     ) {
         fun name(name: String) = apply { this.name = name }
-        fun singer(singer: String) = apply { this.singer }
+        fun singer(singer: String) = apply { this.singer = singer }
         fun category(category: Category) = apply { this.category = category }
         fun voiceUrl(voiceUrl: String) = apply { this.voiceUrl = voiceUrl }
         fun lyrics(lyrics: String) = apply { this.lyrics = lyrics }
