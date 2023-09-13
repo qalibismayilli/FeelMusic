@@ -1,11 +1,6 @@
 package com.company.feelmusic.model
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.UpdateTimestamp
@@ -28,7 +23,7 @@ data class User(
     @UpdateTimestamp
     val updatedDate: LocalDateTime?,
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     val username: String?,
 
     @Column(name = "password")
@@ -38,6 +33,7 @@ data class User(
     val email: String?,
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     val role: Role?,
 
     @OneToMany(mappedBy = "user")

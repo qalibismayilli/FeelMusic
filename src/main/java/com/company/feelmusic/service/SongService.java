@@ -37,8 +37,17 @@ public class SongService {
 
         return new SongResponseDto(fromDb.getName(), fromDb.getSinger(),
                 fromDb.getCategory().getName(), fromDb.getLyrics(), fromDb.getImage());
-
     }
+
+    @Transactional
+    public SongResponseDto remove(String songId) {
+        Song song = songRepository.findById(songId).orElseThrow();
+        songRepository.delete(song);
+
+        return new SongResponseDto(song.getName(), song.getSinger(),
+                song.getCategory().getName(), song.getLyrics(), song.getImage());
+    }
+
 
     private static List<SongResponseDto> compareToResponse(List<Song> songs) {
         return songs.stream().map(song -> new SongResponseDto(song.getName(), song.getSinger(),
@@ -47,9 +56,8 @@ public class SongService {
 
     public List<SongResponseDto> listSongs(Integer pageNo, Integer size) {
         List<Song> songs = songRepository.findAll(PageRequest.of(pageNo - 1, size)).getContent();
-        return  compareToResponse(songs);
+        return compareToResponse(songs);
     }
-
 
     public List<SongResponseDto> searchByName(String name) {
         List<Song> fromDb = songRepository.findAllByName(name);
@@ -65,8 +73,6 @@ public class SongService {
         Category category = categoryService.getCategoryByName(categoryName);
         return compareToResponse(songRepository.findAllByCategory(category));
     }
-
-
 
 
 }

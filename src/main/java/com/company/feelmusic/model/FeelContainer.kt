@@ -23,7 +23,7 @@ data class FeelContainer(
     val updatedDate: LocalDateTime?,
 
     @Column(name = "feel")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     val feel: Feel?,
 
     @ManyToMany(mappedBy = "feelContainers", fetch = FetchType.LAZY)

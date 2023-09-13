@@ -46,7 +46,7 @@ data class Song(
     val image: Image?,
 
     @ManyToMany
-    @JsonIgnore
+//    @JsonIgnore
     val feelContainers: List<FeelContainer>?
 
 ) {
