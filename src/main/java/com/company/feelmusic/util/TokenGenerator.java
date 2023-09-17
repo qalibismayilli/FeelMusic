@@ -1,4 +1,4 @@
-package util;
+package com.company.feelmusic.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
