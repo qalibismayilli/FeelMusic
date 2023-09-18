@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -50,9 +51,9 @@ public class UserService {
         return convertTo(user);
     }
 
-    public UserResponseDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        return convertTo(user);
+    public List<UserResponseDto> listByEmail(String email) {
+        List<User> users = userRepository.findAllByEmail(email);
+        return users.stream().map(user -> convertTo(user)).toList();
     }
 
 
