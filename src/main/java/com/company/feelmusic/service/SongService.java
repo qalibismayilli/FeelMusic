@@ -2,15 +2,18 @@ package com.company.feelmusic.service;
 
 import com.company.feelmusic.dto.request.SongRequestDto;
 import com.company.feelmusic.dto.response.SongResponseDto;
+import com.company.feelmusic.exception.GenericException;
 import com.company.feelmusic.model.Category;
 import com.company.feelmusic.model.Song;
 import com.company.feelmusic.repository.SongRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SongService {
@@ -60,12 +63,15 @@ public class SongService {
     }
 
     public List<SongResponseDto> searchByName(String name) {
-        List<Song> fromDb = songRepository.findAllByName(name);
+        List<Song> fromDb = Optional.of(songRepository.findAllByName(name))
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND,"Song not found by given name"));
+
         return compareToResponse(fromDb);
     }
 
     public List<SongResponseDto> searchBySinger(String singer) {
-        List<Song> fromDb = songRepository.findAllBySinger(singer);
+        List<Song> fromDb = Optional.of(songRepository.findAllBySinger(singer))
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND, "Song not found by given Singer"));
         return compareToResponse(fromDb);
     }
 

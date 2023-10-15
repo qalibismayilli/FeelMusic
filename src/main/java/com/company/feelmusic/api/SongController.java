@@ -29,7 +29,8 @@ public class SongController {
     }
 
     @GetMapping("/listSongs")
-    public ResponseEntity<List<SongResponseDto>> listSongs(@RequestParam Integer pageNo, @RequestParam Integer size) {
+    public ResponseEntity<List<SongResponseDto>> listSongs(@RequestParam Integer pageNo,
+                                                           @RequestParam Integer size) {
         return ResponseEntity.ok(songService.listSongs(pageNo, size));
     }
 
@@ -39,8 +40,8 @@ public class SongController {
     }
 
     @GetMapping("/searchByCategory")
-    public ResponseEntity<List<SongResponseDto>> searchByCategory(@RequestParam String categoryName) {
-        return ResponseEntity.ok(songService.searchByCategory(categoryName));
+    public ResponseEntity<List<SongResponseDto>> searchByCategory(@RequestParam String name) {
+        return ResponseEntity.ok(songService.searchByName(name));
     }
 
     @GetMapping("/searchBySinger")
