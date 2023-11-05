@@ -6,6 +6,7 @@ import com.company.feelmusic.exception.GenericException;
 import com.company.feelmusic.model.Role;
 import com.company.feelmusic.model.User;
 import com.company.feelmusic.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    private UserResponseDto convertTo(User user) {
+    protected UserResponseDto convertTo(User user) {
         return new UserResponseDto(user.getUsername(), user.getEmail(), user.getRole());
     }
 
+    @Transactional
     public UserResponseDto createUser(UserRequestDto request) {
         User user = new User.Builder().username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword())).email(request.getEmail())
@@ -39,6 +41,7 @@ public class UserService {
         return convertTo(fromDB);
     }
 
+    @Transactional
     public UserResponseDto createAdmin(UserRequestDto request) {
         User user = new User.Builder().username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword())).email(request.getEmail())
