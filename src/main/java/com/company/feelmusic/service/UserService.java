@@ -6,13 +6,14 @@ import com.company.feelmusic.exception.GenericException;
 import com.company.feelmusic.model.Role;
 import com.company.feelmusic.model.User;
 import com.company.feelmusic.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -43,8 +44,8 @@ public class UserService {
 
     @Transactional
     public UserResponseDto createAdmin(UserRequestDto request) {
-        User user = new User.Builder().username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword())).email(request.getEmail())
+        User user = new User.Builder().username(Objects.requireNonNull(request.getUsername()))
+                .password(passwordEncoder.encode(request.getPassword())).email(Objects.requireNonNull(request.getEmail()))
                 .role(Role.ADMIN).feelContainers(new ArrayList<>()).build();
 
         User fromDB = userRepository.save(user);

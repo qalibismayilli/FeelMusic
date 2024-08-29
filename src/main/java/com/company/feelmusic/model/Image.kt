@@ -30,6 +30,9 @@ data class Image(
     @UpdateTimestamp()
     val updatedDate: LocalDateTime?,
 
+    @Column(name= "name")
+    val name: String?,
+
     @Column(name = "image_url")
     val imageUrl: String?,
 
@@ -41,12 +44,14 @@ data class Image(
         var id: String? = null,
         var createdDate: LocalDateTime? = null,
         var updatedDate: LocalDateTime? = null,
+        var name: String? = null,
         var imageUrl: String? = null,
         var songs: List<Song>? = null
     ) {
+        fun name(name: String) = apply { this.name = name }
         fun imageUrl(imageUrl: String) = apply { this.imageUrl = imageUrl }
         fun songs(songs: List<Song>) = apply { this.songs = songs }
 
-        fun build() = Image(id, createdDate, updatedDate, imageUrl, songs)
+        fun build() = Image(id, createdDate, updatedDate,name, imageUrl, songs)
     }
 }

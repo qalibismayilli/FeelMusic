@@ -6,10 +6,10 @@ import com.company.feelmusic.exception.GenericException;
 import com.company.feelmusic.model.Category;
 import com.company.feelmusic.model.Song;
 import com.company.feelmusic.repository.SongRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
