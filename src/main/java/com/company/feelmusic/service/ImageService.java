@@ -2,9 +2,11 @@ package com.company.feelmusic.service;
 
 import com.company.feelmusic.dto.ImageModel;
 import com.company.feelmusic.dto.response.ImageResponseDto;
+import com.company.feelmusic.exception.GenericException;
 import com.company.feelmusic.model.Image;
 import com.company.feelmusic.repository.ImageRepository;
 import jdk.jfr.TransitionTo;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,13 +38,17 @@ public class ImageService {
 
     @Transactional
     public ImageResponseDto removeImage(String imageId){
-        Image fromDb = imageRepository.findById(imageId).orElseThrow();
+        Image fromDb = imageRepository
+                .findById(imageId)
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND,"Image not found by given id"));
         imageRepository.delete(fromDb);
         return convertToResponseDto(fromDb);
     }
 
     public List<ImageResponseDto> getImagesBySongId(String songId){
-        List<Image> fromDb = imageRepository.getImagesBySongId(songId);
+        List<Image> fromDb = imageRepository
+                .getImagesBySongId(songId)
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND,"Image not found"));
         return fromDb.stream().map(image -> convertToResponseDto(image)).toList();
     }
 

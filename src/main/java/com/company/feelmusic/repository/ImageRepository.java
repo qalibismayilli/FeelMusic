@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ImageRepository extends JpaRepository<Image, String> , JpaSpecificationExecutor<Image> {
 
@@ -18,6 +19,6 @@ public interface ImageRepository extends JpaRepository<Image, String> , JpaSpeci
     ImageResponseDto addImageToSong(String imageId, String songId );
 
 
-    List<Image> getImagesBySongId(String songId);
+    Optional<List<Image>> getImagesBySongId(String songId);
 
 }

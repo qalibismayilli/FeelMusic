@@ -18,6 +18,10 @@ public class GenericException extends RuntimeException{
         this.errorMessage = errorMessage;
     }
 
+    public GenericException(String errorMessage){
+        this (HttpStatus.INTERNAL_SERVER_ERROR, errorMessage);
+    }
+
     public HttpStatus getStatus() {
         return status;
     }

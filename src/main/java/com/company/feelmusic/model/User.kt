@@ -57,6 +57,5 @@ data class User(
         fun feelContainers(feelContainers: List<FeelContainer>?) = apply { this.feelContainers = feelContainers }
 
         fun build() = User(id, createdDate, updatedDate, username, password, email, role, feelContainers)
-
     }
 }
