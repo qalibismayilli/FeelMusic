@@ -18,12 +18,12 @@ public class SongController {
         this.songService = songService;
     }
 
-    @PostMapping("/save")
+    @PostMapping("/admin/save")
     public ResponseEntity<SongResponseDto> save(@RequestBody SongRequestDto request) {
         return ResponseEntity.ok(songService.save(request));
     }
 
-    @PostMapping("/remove")
+    @PostMapping("/admin/remove")
     public ResponseEntity<SongResponseDto> remove(@RequestParam String songId) {
         return ResponseEntity.ok(songService.remove(songId));
     }

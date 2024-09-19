@@ -19,22 +19,23 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/addImageToSong")
-    public ResponseEntity<ImageResponseDto> addImageToSong(@RequestParam String imageId, @RequestParam String songId){
-        return ResponseEntity.ok(imageService.addImageToSong(imageId, songId));
+    @PostMapping("/admin/addImageToSong")
+    public ResponseEntity<Void> addImageToSong(@RequestParam String imageId, @RequestParam String songId){
+        imageService.addImageToSong(imageId, songId);
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/removeImage")
+    @PostMapping("/admin/removeImage")
     public ResponseEntity<ImageResponseDto> removeImage(String imageId){
         return ResponseEntity.ok(imageService.removeImage(imageId));
     }
 
-    @GetMapping("/getImagesBySondgId")
-    public ResponseEntity<List<ImageResponseDto>> getImagesBySongId(String songId){
-        return ResponseEntity.ok(imageService.getImagesBySongId(songId));
+    @GetMapping("/getImagesBySongId")
+    public ResponseEntity<ImageResponseDto> getImagesBySongId(String songId){
+        return ResponseEntity.ok(imageService.getImageBySongId(songId));
     }
 
-    @PostMapping("/uploadImage")
+    @PostMapping("/admin/uploadImage")
     public ResponseEntity<Map> uploadImage(ImageModel imageModel){
         return imageService.uploadImage(imageModel);
     }

@@ -19,12 +19,12 @@ public class UserController {
     }
 
 
-    @PostMapping("/createUser")
+    @PostMapping("/admin/createUser")
     public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto request){
         return ResponseEntity.ok(userService.createUser(request));
     }
 
-    @PostMapping("/createAdmin")
+    @PostMapping("/amdin/createAdmin")
     public ResponseEntity<UserResponseDto> createAdmin(@RequestBody UserRequestDto request){
         return ResponseEntity.ok(userService.createAdmin(request));
     }

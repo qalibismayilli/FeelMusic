@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SongRepository extends JpaRepository<Song, String>, JpaSpecificationExecutor<Song> {
     List<Song> findAllByName(String name);
@@ -14,4 +15,5 @@ public interface SongRepository extends JpaRepository<Song, String>, JpaSpecific
     List<Song> findAllBySinger(String singer);
 
     List<Song> findAllByCategory(Category category);
+
 }

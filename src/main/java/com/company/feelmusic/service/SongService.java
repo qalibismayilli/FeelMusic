@@ -80,5 +80,10 @@ public class SongService {
         return compareToResponse(songRepository.findAllByCategory(category));
     }
 
+    protected Song findById(String songId){
+        return songRepository.findById(songId)
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND,"Song not found by given id"));
+    }
+
 
 }

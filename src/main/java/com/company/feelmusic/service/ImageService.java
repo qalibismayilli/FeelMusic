@@ -5,7 +5,6 @@ import com.company.feelmusic.dto.response.ImageResponseDto;
 import com.company.feelmusic.exception.GenericException;
 import com.company.feelmusic.model.Image;
 import com.company.feelmusic.repository.ImageRepository;
-import jdk.jfr.TransitionTo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,11 +19,13 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
     private final CloudinaryServiceImpl cloudinaryServiceImpl;
+    private final SongService songService;
 
 
-    public ImageService(ImageRepository imageRepository, CloudinaryServiceImpl cloudinaryServiceImpl) {
+    public ImageService(ImageRepository imageRepository, CloudinaryServiceImpl cloudinaryServiceImpl, SongService songService) {
         this.imageRepository = imageRepository;
         this.cloudinaryServiceImpl = cloudinaryServiceImpl;
+        this.songService = songService;
     }
 
     protected ImageResponseDto convertToResponseDto(Image image) {
@@ -32,28 +33,25 @@ public class ImageService {
     }
 
     @Transactional
-    public ImageResponseDto addImageToSong(String imageId, String songId){
-        return imageRepository.addImageToSong(imageId, songId);
+    public void addImageToSong(String imageId, String songId) {
+        imageRepository.addImageToSong(imageId, songId);
     }
 
     @Transactional
-    public ImageResponseDto removeImage(String imageId){
+    public ImageResponseDto removeImage(String imageId) {
         Image fromDb = imageRepository
                 .findById(imageId)
-                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND,"Image not found by given id"));
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND, "Image not found by given id"));
         imageRepository.delete(fromDb);
         return convertToResponseDto(fromDb);
     }
 
-    public List<ImageResponseDto> getImagesBySongId(String songId){
-        List<Image> fromDb = imageRepository
-                .getImagesBySongId(songId)
-                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND,"Image not found"));
-        return fromDb.stream().map(image -> convertToResponseDto(image)).toList();
+    public ImageResponseDto getImageBySongId(String songId) {
+        return convertToResponseDto(Objects.requireNonNull(songService.findById(songId).getImage()));
     }
 
     @Transactional
-    public ResponseEntity<Map> uploadImage(ImageModel imageModel){
+    public ResponseEntity<Map> uploadImage(ImageModel imageModel) {
 
         try {
             if (imageModel.getName().isEmpty()) {
@@ -67,7 +65,7 @@ public class ImageService {
                     .name(imageModel.getName())
                     .imageUrl(cloudinaryServiceImpl.uploadFile(imageModel.getFile(), "folder_1"))
                     .build();
-            if(image.getImageUrl() == null) {
+            if (image.getImageUrl() == null) {
                 return ResponseEntity.badRequest().build();
             }
             imageRepository.save(image);
